@@ -205,7 +205,7 @@ export default function Header() {
 
           {/* Mobile burger */}
           <button className="mobile-burger" onClick={() => setMenuOpen(o => !o)}
-            style={{ display: 'none', border: 'none', background: 'rgba(184,121,26,0.1)', color: '#7c4a00', borderRadius: 10, padding: '0.5rem', cursor: 'pointer', border: '1px solid rgba(184,121,26,0.2)' }}>
+            style={{ display: 'none', background: 'rgba(184,121,26,0.1)', color: '#7c4a00', borderRadius: 10, padding: '0.5rem', cursor: 'pointer', border: '1px solid rgba(184,121,26,0.2)' }}>
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
