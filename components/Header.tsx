@@ -166,7 +166,7 @@ export default function Header() {
                 }}>
                   <div style={{ padding: '0.4rem' }}>
                     {dropdownItems.map(item => (
-                      <Link
+                      <a
                         key={item.href}
                         href={item.href}
                         onClick={() => setProfilOpen(false)}
@@ -191,7 +191,7 @@ export default function Header() {
                       >
                         <span style={{ color: 'var(--accent)', flexShrink: 0 }}>{item.icon}</span>
                         {item.label}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -247,12 +247,12 @@ export default function Header() {
               {hasDropdown && mobileProfilOpen && (
                 <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 8, margin: '0.4rem 0', overflow: 'hidden' }}>
                   {dropdownItems.map(item => (
-                    <Link key={item.href} href={item.href}
+                    <a key={item.href} href={item.href}
                       onClick={() => { setMenuOpen(false); setMobileProfilOpen(false) }}
                       style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.75rem 1rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                       <span style={{ color: 'var(--accent)' }}>{item.icon}</span>
                       {item.label}
-                    </Link>
+                    </a>
                   ))}
                 </div>
               )}
