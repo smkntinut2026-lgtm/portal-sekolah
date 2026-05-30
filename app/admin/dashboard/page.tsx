@@ -23,8 +23,8 @@ export default function AdminDashboard() {
   return (
     <div style={{ maxWidth: 900 }}>
       <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: 'var(--text)', marginBottom: '0.3rem' }}>Dashboard</h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>Selamat datang di panel admin portal sekolah</p>
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.3rem', fontFamily: 'Space Grotesk, sans-serif' }}>Dashboard</h1>
+        <p style={{ color: '#64748b', fontSize: '0.875rem' }}>Selamat datang di panel admin portal sekolah</p>
       </div>
 
       {/* Alert profil */}
@@ -43,17 +43,17 @@ export default function AdminDashboard() {
       {/* Stats */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '1rem', marginBottom: '2.5rem' }}>
         {[
-          { label: 'Total Pengumuman', value: counts.announcements, sub: `${counts.published} dipublikasikan`, icon: <Megaphone size={20} />, href: '/admin/pengumuman', color: 'var(--accent)', bg: 'var(--accent-soft)' },
-          { label: 'Foto Galeri', value: counts.gallery, sub: 'total foto', icon: <Images size={20} />, href: '/admin/galeri', color: '#f59e0b', bg: '#fffbeb' },
-          { label: 'Dipublikasikan', value: counts.published, sub: 'dari ' + counts.announcements + ' pengumuman', icon: <TrendingUp size={20} />, href: '/admin/pengumuman', color: '#10b981', bg: '#f0fdf4' },
+          { label: 'Total Pengumuman', value: counts.announcements, sub: `${counts.published} dipublikasikan`, icon: <Megaphone size={20} />, href: '/admin/pengumuman', color: '#2563eb', bg: '#dbeafe' },
+          { label: 'Foto Galeri', value: counts.gallery, sub: 'total foto', icon: <Images size={20} />, href: '/admin/galeri', color: '#f59e0b', bg: '#fef3c7' },
+          { label: 'Dipublikasikan', value: counts.published, sub: 'dari ' + counts.announcements + ' pengumuman', icon: <TrendingUp size={20} />, href: '/admin/pengumuman', color: '#10b981', bg: '#d1fae5' },
         ].map(s => (
           <Link key={s.label} href={s.href} style={{ textDecoration: 'none' }}>
-            <div className="card card-hover" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+            <div className="admin-card admin-card-hover" style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
               <div style={{ background: s.bg, color: s.color, borderRadius: 12, padding: '0.85rem', flexShrink: 0 }}>{s.icon}</div>
               <div>
-                <div style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text)', lineHeight: 1, fontFamily: 'Bricolage Grotesque, sans-serif' }}>{s.value}</div>
-                <div style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--text)', marginTop: '0.2rem' }}>{s.label}</div>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-light)', marginTop: '0.1rem' }}>{s.sub}</div>
+                <div style={{ fontSize: '2rem', fontWeight: 800, color: '#0f172a', lineHeight: 1, fontFamily: 'Space Grotesk, sans-serif' }}>{s.value}</div>
+                <div style={{ fontSize: '0.78rem', fontWeight: 600, color: '#0f172a', marginTop: '0.2rem' }}>{s.label}</div>
+                <div style={{ fontSize: '0.72rem', color: '#64748b', marginTop: '0.1rem' }}>{s.sub}</div>
               </div>
             </div>
           </Link>
@@ -62,7 +62,7 @@ export default function AdminDashboard() {
 
       {/* Quick actions */}
       <div style={{ marginBottom: '0.75rem' }}>
-        <div className="section-label" style={{ marginBottom: '1rem' }}>Aksi Cepat</div>
+        <div style={{ fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: '#2563eb', marginBottom: '1rem', fontFamily: 'Space Grotesk, sans-serif' }}>Aksi Cepat</div>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))', gap: '0.75rem' }}>
           {[
             { label: 'Edit Profil Sekolah', href: '/admin/profil', icon: <School size={18} />, desc: 'Nama, logo, kepala sekolah, visi misi' },
@@ -70,13 +70,13 @@ export default function AdminDashboard() {
             { label: 'Upload Foto Galeri', href: '/admin/galeri', icon: <Images size={18} />, desc: 'Tambah dokumentasi kegiatan' },
           ].map(a => (
             <Link key={a.href} href={a.href} style={{ textDecoration: 'none' }}>
-              <div className="card card-hover">
+              <div className="admin-card admin-card-hover">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.85rem' }}>
-                  <div style={{ color: 'var(--accent)', background: 'var(--accent-soft)', borderRadius: 8, padding: '0.5rem' }}>{a.icon}</div>
-                  <ArrowRight size={15} style={{ color: 'var(--text-light)', marginTop: 2 }} />
+                  <div style={{ color: '#2563eb', background: '#dbeafe', borderRadius: 8, padding: '0.5rem' }}>{a.icon}</div>
+                  <ArrowRight size={15} style={{ color: '#94a3b8', marginTop: 2 }} />
                 </div>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text)', marginBottom: '0.2rem' }}>{a.label}</div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>{a.desc}</div>
+                <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#0f172a', marginBottom: '0.2rem' }}>{a.label}</div>
+                <div style={{ fontSize: '0.78rem', color: '#64748b' }}>{a.desc}</div>
               </div>
             </Link>
           ))}
