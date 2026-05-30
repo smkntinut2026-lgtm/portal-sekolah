@@ -35,7 +35,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const current = MENU.find(m => m.href === pathname)
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: '#f1f5f9' }}>
+      <div style={{ display: 'flex', minHeight: '100vh', background: '#f1f5f9', color: '#0f172a' }}>
 
       {/* Sidebar */}
       <aside style={{
