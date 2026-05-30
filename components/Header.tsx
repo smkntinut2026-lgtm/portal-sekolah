@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation'
 import { supabase, SchoolProfile } from '@/lib/supabase'
 import { Menu, X, ExternalLink, ChevronDown, Target, BookOpen, User } from 'lucide-react'
 
+const SPMB_HREF = '/spmb'
 const EXT = [
-  { label: 'SPMB', href: 'https://spmb-smk1.vercel.app/' },
   { label: 'Arsip File', href: 'https://arsip-sekolah-peach.vercel.app/' },
 ]
 
@@ -199,6 +199,12 @@ export default function Header() {
             </div>
 
             <div style={{ width: 1, height: 18, background: 'var(--border)', margin: '0 0.6rem' }} />
+            <Link href={SPMB_HREF}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.4rem 0.85rem', borderRadius: 8, fontSize: '0.78rem', fontWeight: 600, color: '#60a5fa', border: '1px solid rgba(59,130,246,0.3)', textDecoration: 'none', transition: 'all 0.15s', fontFamily: 'Space Grotesk, sans-serif', background: 'rgba(59,130,246,0.08)' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(59,130,246,0.18)'; el.style.borderColor = 'rgba(59,130,246,0.5)' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = 'rgba(59,130,246,0.08)'; el.style.borderColor = 'rgba(59,130,246,0.3)' }}>
+              SPMB
+            </Link>
             {EXT.map(l => (
               <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.4rem 0.85rem', borderRadius: 8, fontSize: '0.78rem', fontWeight: 500, color: 'var(--text-muted)', border: '1px solid var(--border)', textDecoration: 'none', transition: 'all 0.15s', fontFamily: 'Space Grotesk, sans-serif' }}
@@ -259,6 +265,10 @@ export default function Header() {
             </div>
 
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem', flexWrap: 'wrap' }}>
+              <Link href={SPMB_HREF} onClick={() => setMenuOpen(false)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.6rem 1.1rem', borderRadius: 8, border: '1px solid rgba(59,130,246,0.35)', background: 'rgba(59,130,246,0.1)', color: '#60a5fa', textDecoration: 'none', fontSize: '0.875rem', fontWeight: 600 }}>
+                SPMB
+              </Link>
               {EXT.map(l => (
                 <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
                   style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', padding: '0.6rem 1.1rem', borderRadius: 8, border: '1px solid var(--border)', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.875rem' }}>
