@@ -63,7 +63,7 @@ export default function Header() {
               const active = pathname === l.href
               return (
                 <Link key={l.href} href={l.href} style={{
-                  padding: '0.45rem 0.9rem', borderRadius: var(--radius-sm),
+                  padding: '0.45rem 0.9rem', borderRadius: '8px',
                   fontSize: '0.875rem', fontWeight: active ? 600 : 400,
                   color: active ? 'var(--accent)' : 'var(--text-muted)',
                   background: active ? 'var(--accent-soft)' : 'transparent',
