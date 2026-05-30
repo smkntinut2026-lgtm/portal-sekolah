@@ -16,8 +16,15 @@ export type SchoolProfile = {
   email: string
   telepon: string
   website: string
+  // === BARU ===
+  kepsek_nama: string
+  kepsek_nip: string
+  kepsek_foto_url: string
+  kepsek_sambutan: string
+  visi: string
+  misi: string
+  sejarah: string
 }
-
 export type Announcement = {
   id: string
   judul: string
