@@ -11,6 +11,41 @@ const EXT = [
   { label: 'Arsip File', href: 'https://arsip-sekolah-peach.vercel.app/' },
 ]
 
+function Clock() {
+  const [now, setNow] = useState(new Date())
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000)
+    return () => clearInterval(t)
+  }, [])
+
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const time = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`
+  const date = now.toLocaleDateString('id-ID', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
+
+  return (
+    <div style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'center',
+      padding: '0.28rem 0.8rem', borderRadius: 10,
+      background: 'rgba(184,121,26,0.08)',
+      border: '1px solid rgba(184,121,26,0.18)',
+      gap: 1,
+    }}>
+      <span style={{
+        fontFamily: "'Courier New', Courier, monospace",
+        fontSize: '1rem', fontWeight: 700, letterSpacing: '0.12em',
+        background: 'linear-gradient(135deg, #7c4a00, #e8a825)',
+        WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+        lineHeight: 1.2,
+      }}>{time}</span>
+      <span style={{
+        fontSize: '0.6rem', color: 'rgba(45,26,6,0.45)',
+        fontWeight: 500, letterSpacing: '0.04em',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}>{date}</span>
+    </div>
+  )
+}
+
 export default function Header() {
   const [profile, setProfile] = useState<SchoolProfile | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -135,6 +170,7 @@ export default function Header() {
 
           {/* Right Nav */}
           <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+
             {/* Profil dropdown */}
             <div ref={profilRef} style={{ position: 'relative' }}
               onMouseEnter={handleMouseEnter}
@@ -201,6 +237,10 @@ export default function Header() {
                 {e.label} <ExternalLink size={11} />
               </a>
             ))}
+
+            {/* Digital Clock */}
+            <Clock />
+
           </nav>
 
           {/* Mobile burger */}
@@ -242,6 +282,9 @@ export default function Header() {
               {EXT.map(e => (
                 <a key={e.href} href={e.href} target="_blank" rel="noopener noreferrer" style={{ display: 'block', padding: '0.75rem 1rem', background: 'rgba(184,121,26,0.08)', color: '#7c4a00', borderRadius: 10, textDecoration: 'none', fontWeight: 600, fontSize: '0.9rem', textAlign: 'center', border: '1px solid rgba(184,121,26,0.18)' }}>{e.label} ↗</a>
               ))}
+              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.25rem' }}>
+                <Clock />
+              </div>
             </div>
           </div>
         )}
