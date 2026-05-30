@@ -35,15 +35,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const current = MENU.find(m => m.href === pathname)
 
   return (
-      <div style={{ display: 'flex', minHeight: '100vh', background: '#f1f5f9', color: '#0f172a' }}>
+      <div className="admin-root" style={{ display: 'flex', minHeight: '100vh', background: '#f1f5f9', color: '#0f172a' }}>
 
       {/* Sidebar */}
       <aside style={{
-        width: 256, background: 'var(--primary)', color: 'white',
+        width: 256, background: '#0f172a', color: 'white',
         display: 'flex', flexDirection: 'column',
         position: 'fixed', top: 0, bottom: 0, left: 0, zIndex: 50,
         transition: 'transform 0.3s cubic-bezier(0.4,0,0.2,1)',
-        boxShadow: '4px 0 24px rgba(0,0,0,0.12)'
+        boxShadow: '4px 0 24px rgba(0,0,0,0.18)'
       }} className="admin-sidebar">
 
         {/* Brand */}
@@ -106,24 +106,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div style={{ flex: 1, marginLeft: 256, display: 'flex', flexDirection: 'column' }} className="admin-main">
 
         {/* Topbar */}
-        <header style={{ background: 'white', borderBottom: '1px solid var(--border)', padding: '0 1.5rem', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 30, boxShadow: 'var(--shadow-sm)' }}>
+        <header style={{ background: 'white', borderBottom: '1px solid #e2e8f0', padding: '0 1.5rem', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 30, boxShadow: '0 1px 3px rgba(0,0,0,0.06)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <button onClick={() => setSidebarOpen(s => !s)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'none', padding: '0.25rem' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b', display: 'none', padding: '0.25rem' }}
               className="sidebar-toggle">
               {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
             {/* Breadcrumb */}
             <nav style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem' }}>
-              <Link href="/admin/dashboard" style={{ color: 'var(--text-light)', textDecoration: 'none' }}>Dashboard</Link>
+              <Link href="/admin/dashboard" style={{ color: '#64748b', textDecoration: 'none' }}>Dashboard</Link>
               {current && current.href !== '/admin/dashboard' && (
-                <><span style={{ color: 'var(--border)' }}>/</span><span style={{ color: 'var(--text)', fontWeight: 600 }}>{current.label}</span></>
+                <><span style={{ color: '#e2e8f0' }}>/</span><span style={{ color: '#0f172a', fontWeight: 600 }}>{current.label}</span></>
               )}
             </nav>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--accent)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700 }}>A</div>
-            <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', fontWeight: 500 }}>Admin</span>
+            <div style={{ width: 30, height: 30, borderRadius: '50%', background: '#2563eb', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700 }}>A</div>
+            <span style={{ fontSize: '0.82rem', color: '#64748b', fontWeight: 500 }}>Admin</span>
           </div>
         </header>
 
@@ -132,9 +132,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {pathname !== '/admin/dashboard' && (
             <div style={{ marginBottom: '1.5rem' }}>
               <Link href="/admin/dashboard"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--text-muted)', fontSize: '0.82rem', textDecoration: 'none', padding: '0.4rem 0.8rem', borderRadius: 8, border: '1.5px solid var(--border)', background: 'white', fontWeight: 500, transition: 'all 0.15s' }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--accent)'; el.style.borderColor = 'var(--accent)' }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--text-muted)'; el.style.borderColor = 'var(--border)' }}>
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: '#64748b', fontSize: '0.82rem', textDecoration: 'none', padding: '0.4rem 0.8rem', borderRadius: 8, border: '1.5px solid #e2e8f0', background: 'white', fontWeight: 500, transition: 'all 0.15s' }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = '#2563eb'; el.style.borderColor = '#2563eb' }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = '#64748b'; el.style.borderColor = '#e2e8f0' }}>
                 <ChevronLeft size={14} /> Kembali ke Dashboard
               </Link>
             </div>
