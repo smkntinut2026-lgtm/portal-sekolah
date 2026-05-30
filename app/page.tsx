@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { supabase, SchoolProfile, Announcement, GalleryItem } from '@/lib/supabase'
-import { ArrowRight, ArrowUpRight, ChevronRight, Megaphone, Images, BookOpen } from 'lucide-react'
+import { ArrowRight, ArrowUpRight, ChevronRight, Megaphone, Images, BookOpen, Sparkles, MapPin } from 'lucide-react'
 
 export default function Home() {
   const [profile, setProfile] = useState<SchoolProfile | null>(null)
@@ -23,100 +23,180 @@ export default function Home() {
       <Header />
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', minHeight: '92vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
+      <section style={{ position: 'relative', minHeight: '95vh', display: 'flex', alignItems: 'center', overflow: 'hidden' }}>
 
-        {/* Background layers */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%)' }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 50% 40% at 80% 80%, rgba(245,158,11,0.06) 0%, transparent 60%)' }} />
+        {/* SVG geometric background */}
+        <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }} viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="orb1" cx="50%" cy="0%" r="60%">
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.18" />
+              <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="orb2" cx="85%" cy="70%" r="40%">
+              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.12" />
+              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="orb3" cx="10%" cy="80%" r="35%">
+              <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.1" />
+              <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+            </radialGradient>
+          </defs>
 
-        {/* Grid lines */}
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)', backgroundSize: '60px 60px', maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 80%)' }} />
+          {/* Gradient orbs */}
+          <rect width="1440" height="900" fill="url(#orb1)" />
+          <rect width="1440" height="900" fill="url(#orb2)" />
+          <rect width="1440" height="900" fill="url(#orb3)" />
 
-        {/* Glowing orb top */}
-        <div style={{ position: 'absolute', top: -120, left: '50%', transform: 'translateX(-50%)', width: 600, height: 600, background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          {/* Geometric grid lines */}
+          {Array.from({ length: 16 }).map((_, i) => (
+            <line key={`v${i}`} x1={i * 96} y1="0" x2={i * 96} y2="900" stroke="rgba(99,102,241,0.04)" strokeWidth="1" />
+          ))}
+          {Array.from({ length: 10 }).map((_, i) => (
+            <line key={`h${i}`} x1="0" y1={i * 100} x2="1440" y2={i * 100} stroke="rgba(99,102,241,0.04)" strokeWidth="1" />
+          ))}
 
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '6rem 1.5rem', width: '100%', position: 'relative', zIndex: 1 }}>
-          <div style={{ maxWidth: 780 }}>
+          {/* Large decorative hexagon top-right */}
+          <polygon points="1200,0 1360,90 1360,270 1200,360 1040,270 1040,90"
+            fill="none" stroke="rgba(99,102,241,0.07)" strokeWidth="1.5" />
+          <polygon points="1220,30 1340,100 1340,240 1220,310 1100,240 1100,100"
+            fill="none" stroke="rgba(139,92,246,0.05)" strokeWidth="1" />
+
+          {/* Diagonal accent lines */}
+          <line x1="0" y1="600" x2="400" y2="0" stroke="rgba(99,102,241,0.06)" strokeWidth="1" />
+          <line x1="50" y1="650" x2="450" y2="50" stroke="rgba(99,102,241,0.04)" strokeWidth="1" />
+
+          {/* Small geometric shapes scattered */}
+          <rect x="900" y="120" width="40" height="40" rx="6" fill="none" stroke="rgba(6,182,212,0.15)" strokeWidth="1.5" transform="rotate(20 920 140)" />
+          <rect x="1300" y="400" width="28" height="28" rx="4" fill="none" stroke="rgba(139,92,246,0.12)" strokeWidth="1.5" transform="rotate(35 1314 414)" />
+          <circle cx="180" cy="700" r="40" fill="none" stroke="rgba(99,102,241,0.08)" strokeWidth="1.5" />
+          <circle cx="160" cy="700" r="22" fill="none" stroke="rgba(99,102,241,0.05)" strokeWidth="1" />
+          <circle cx="1380" cy="180" r="30" fill="none" stroke="rgba(6,182,212,0.1)" strokeWidth="1.5" />
+
+          {/* Triangle bottom-left */}
+          <polygon points="0,750 120,900 0,900" fill="rgba(99,102,241,0.04)" />
+          <polygon points="0,820 60,900 0,900" fill="rgba(99,102,241,0.06)" />
+
+          {/* Dotted pattern top-right area */}
+          {Array.from({ length: 6 }).map((_, row) =>
+            Array.from({ length: 8 }).map((_, col) => (
+              <circle key={`dot-${row}-${col}`} cx={1050 + col * 32} cy={50 + row * 32} r="1.5" fill="rgba(99,102,241,0.2)" />
+            ))
+          )}
+
+          {/* Bottom gradient fade */}
+          <defs>
+            <linearGradient id="btmFade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#05070f" stopOpacity="0" />
+              <stop offset="100%" stopColor="#05070f" stopOpacity="1" />
+            </linearGradient>
+          </defs>
+          <rect y="700" width="1440" height="200" fill="url(#btmFade)" />
+        </svg>
+
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '6rem 1.5rem', width: '100%', position: 'relative', zIndex: 1 }}>
+          <div style={{ maxWidth: 820 }}>
 
             {/* Badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.35rem 1rem', borderRadius: 40, border: '1px solid rgba(59,130,246,0.3)', background: 'rgba(59,130,246,0.08)', marginBottom: '2rem', animation: 'fadeUp 0.4s ease forwards' }}>
-              {profile?.logo_url && <Image src={profile.logo_url} alt="Logo" width={18} height={18} style={{ borderRadius: 4, objectFit: 'cover' }} />}
-              <span style={{ fontSize: '0.72rem', fontWeight: 600, color: 'var(--accent)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Portal Resmi Sekolah</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 1rem 0.4rem 0.5rem', borderRadius: 50, border: '1px solid rgba(99,102,241,0.3)', background: 'rgba(99,102,241,0.08)', marginBottom: '2.25rem', animation: 'fadeUp 0.5s ease forwards', backdropFilter: 'blur(10px)' }}>
+              <div style={{ width: 22, height: 22, borderRadius: 50, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Sparkles size={11} color="white" />
+              </div>
+              <span style={{ fontSize: '0.72rem', fontWeight: 700, background: 'linear-gradient(135deg, #818cf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Portal Resmi Sekolah</span>
             </div>
 
             {/* Heading */}
-            <h1 style={{ fontSize: 'clamp(2.8rem, 6vw, 5rem)', fontWeight: 800, color: 'var(--text)', marginBottom: '1.25rem', letterSpacing: '-0.03em', lineHeight: 1.05, animation: 'fadeUp 0.5s 0.08s ease forwards', opacity: 0 }}>
-              {profile?.nama_sekolah || 'Portal Sekolah'}
+            <h1 style={{ fontSize: 'clamp(3rem, 7vw, 5.5rem)', fontWeight: 900, color: 'var(--text)', marginBottom: '1.25rem', letterSpacing: '-0.04em', lineHeight: 1.0, animation: 'fadeUp 0.6s 0.08s ease forwards', opacity: 0 }}>
+              {profile?.nama_sekolah
+                ? profile.nama_sekolah.split(' ').slice(0, 2).join(' ') + '\n' + profile.nama_sekolah.split(' ').slice(2).join(' ')
+                : 'Portal Sekolah'}
             </h1>
 
+            {/* Gradient line decoration */}
+            <div style={{ width: 80, height: 4, background: 'linear-gradient(90deg, #6366f1, #8b5cf6, #06b6d4)', borderRadius: 2, marginBottom: '1.5rem', animation: 'fadeUp 0.6s 0.14s ease forwards', opacity: 0 }} />
+
             {profile?.tagline && (
-              <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', marginBottom: '0.75rem', lineHeight: 1.7, maxWidth: 540, animation: 'fadeUp 0.5s 0.16s ease forwards', opacity: 0 }}>
+              <p style={{ fontSize: '1.15rem', color: 'rgba(238,242,255,0.65)', marginBottom: '0.85rem', lineHeight: 1.75, maxWidth: 560, animation: 'fadeUp 0.6s 0.18s ease forwards', opacity: 0, fontWeight: 400 }}>
                 {profile.tagline}
               </p>
             )}
             {profile?.alamat && (
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-dim)', marginBottom: '2.75rem', animation: 'fadeUp 0.5s 0.22s ease forwards', opacity: 0 }}>
-                📍 {profile.alamat}
-              </p>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', color: 'rgba(238,242,255,0.4)', marginBottom: '3rem', animation: 'fadeUp 0.6s 0.22s ease forwards', opacity: 0 }}>
+                <MapPin size={13} style={{ flexShrink: 0 }} />
+                {profile.alamat}
+              </div>
             )}
 
             {/* CTAs */}
-            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', animation: 'fadeUp 0.5s 0.28s ease forwards', opacity: 0 }}>
-              <Link href="/profil" className="btn btn-primary" style={{ padding: '0.8rem 1.85rem', fontSize: '0.925rem' }}>
+            <div style={{ display: 'flex', gap: '0.85rem', flexWrap: 'wrap', animation: 'fadeUp 0.6s 0.28s ease forwards', opacity: 0 }}>
+              <Link href="/profil" className="btn btn-primary" style={{ padding: '0.9rem 2rem', fontSize: '0.925rem', borderRadius: 12 }}>
                 Profil Sekolah <ArrowRight size={16} />
               </Link>
               <a href="https://spmb-smk1.vercel.app/" target="_blank" rel="noopener noreferrer"
-                className="btn btn-ghost" style={{ padding: '0.8rem 1.85rem', fontSize: '0.925rem' }}>
+                className="btn btn-ghost" style={{ padding: '0.9rem 2rem', fontSize: '0.925rem', borderRadius: 12 }}>
                 Daftar SPMB <ArrowUpRight size={15} />
               </a>
             </div>
           </div>
         </div>
-
-        {/* Bottom fade */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 120, background: 'linear-gradient(transparent, var(--bg))' }} />
       </section>
 
-      {/* ── NAV STRIP ── */}
-      <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--bg-2)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
+      {/* ── QUICK NAV STRIP ── */}
+      <div style={{ borderTop: '1px solid rgba(99,102,241,0.1)', borderBottom: '1px solid rgba(99,102,241,0.1)', background: 'rgba(8,12,24,0.8)', backdropFilter: 'blur(20px)' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)' }}>
           {[
-            { icon: <BookOpen size={16} />, label: 'Profil Sekolah', href: '/profil' },
-            { icon: <Megaphone size={16} />, label: 'Pengumuman', href: '/pengumuman' },
-            { icon: <Images size={16} />, label: 'Galeri', href: '/galeri' },
+            { icon: <BookOpen size={17} />, label: 'Profil Sekolah', href: '/profil', color: '#6366f1' },
+            { icon: <Megaphone size={17} />, label: 'Pengumuman', href: '/pengumuman', color: '#8b5cf6' },
+            { icon: <Images size={17} />, label: 'Galeri', href: '/galeri', color: '#06b6d4' },
           ].map((item, i) => (
             <Link key={item.href} href={item.href}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.6rem', padding: '1.1rem 1rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 500, borderRight: i < 2 ? '1px solid var(--border)' : 'none', transition: 'all 0.15s' }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--text)'; el.style.background = 'var(--surface)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--text-muted)'; el.style.background = 'transparent' }}>
-              <span style={{ color: 'var(--accent)' }}>{item.icon}</span> {item.label}
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.65rem', padding: '1.15rem 1rem', color: 'rgba(238,242,255,0.5)', textDecoration: 'none', fontSize: '0.85rem', fontWeight: 600, borderRight: i < 2 ? '1px solid rgba(255,255,255,0.05)' : 'none', transition: 'all 0.2s', letterSpacing: '0.01em', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = '#fff'; el.style.background = `rgba(${item.color === '#6366f1' ? '99,102,241' : item.color === '#8b5cf6' ? '139,92,246' : '6,182,212'},0.08)` }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'rgba(238,242,255,0.5)'; el.style.background = 'transparent' }}>
+              <span style={{ color: item.color }}>{item.icon}</span>
+              {item.label}
             </Link>
           ))}
         </div>
       </div>
 
-      <main style={{ maxWidth: 1200, margin: '0 auto', padding: '5rem 1.5rem', flex: 1, width: '100%' }}>
+      <main style={{ maxWidth: 1280, margin: '0 auto', padding: '5rem 1.5rem', flex: 1, width: '100%' }}>
 
         {/* ── SAMBUTAN KEPSEK ── */}
         {profile?.kepsek_nama && profile?.kepsek_sambutan && (
           <section style={{ marginBottom: '5rem' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '2.5rem', alignItems: 'center', padding: '2.5rem', background: 'linear-gradient(135deg, rgba(59,130,246,0.06) 0%, rgba(255,255,255,0.02) 100%)', border: '1px solid rgba(59,130,246,0.2)', borderRadius: 'var(--radius)', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: 0, right: 0, width: 200, height: 200, background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)', pointerEvents: 'none' }} />
-              <div style={{ textAlign: 'center', flexShrink: 0 }}>
-                {profile.kepsek_foto_url
-                  ? <Image src={profile.kepsek_foto_url} alt={profile.kepsek_nama} width={96} height={112} style={{ borderRadius: 12, objectFit: 'cover', border: '1px solid var(--border-bright)', display: 'block' }} />
-                  : <div style={{ width: 96, height: 96, borderRadius: 12, background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36 }}>👤</div>
-                }
-                <div style={{ marginTop: '0.75rem', fontWeight: 700, fontSize: '0.82rem', color: 'var(--text)' }}>{profile.kepsek_nama}</div>
-                <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>Kepala Sekolah</div>
+            <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'auto 1fr', gap: '2.5rem', alignItems: 'center', padding: '2.5rem', borderRadius: 20, overflow: 'hidden', border: '1px solid rgba(99,102,241,0.15)' }}>
+              {/* Card gradient bg */}
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(99,102,241,0.06) 0%, rgba(8,12,24,0.9) 60%, rgba(6,182,212,0.04) 100%)', zIndex: 0 }} />
+              {/* SVG pattern inside card */}
+              <svg style={{ position: 'absolute', right: 0, top: 0, width: 280, height: '100%', opacity: 0.4, zIndex: 0 }} viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+                {Array.from({ length: 5 }).map((_, row) =>
+                  Array.from({ length: 6 }).map((_, col) => (
+                    <circle key={`kd-${row}-${col}`} cx={col * 45 + 22} cy={row * 40 + 20} r="1.5" fill="rgba(99,102,241,0.3)" />
+                  ))
+                )}
+              </svg>
+
+              <div style={{ textAlign: 'center', flexShrink: 0, position: 'relative', zIndex: 1 }}>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  {profile.kepsek_foto_url
+                    ? <Image src={profile.kepsek_foto_url} alt={profile.kepsek_nama} width={100} height={118} style={{ borderRadius: 14, objectFit: 'cover', border: '2px solid rgba(99,102,241,0.4)', display: 'block' }} />
+                    : <div style={{ width: 100, height: 100, borderRadius: 14, background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.15))', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, border: '2px solid rgba(99,102,241,0.2)' }}>👤</div>
+                  }
+                  <div style={{ position: 'absolute', bottom: -5, right: -5, width: 22, height: 22, borderRadius: 50, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid var(--bg)' }}>
+                    <Sparkles size={10} color="white" />
+                  </div>
+                </div>
+                <div style={{ marginTop: '0.85rem', fontWeight: 800, fontSize: '0.82rem', color: 'var(--text)' }}>{profile.kepsek_nama}</div>
+                <div style={{ fontSize: '0.67rem', color: 'rgba(238,242,255,0.4)', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: 2 }}>Kepala Sekolah</div>
               </div>
+
               <div style={{ position: 'relative', zIndex: 1 }}>
-                <div className="section-label" style={{ marginBottom: '0.75rem' }}>Sambutan</div>
-                <p style={{ fontSize: '1rem', lineHeight: 1.85, color: 'var(--text-muted)', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                <div className="section-label" style={{ marginBottom: '0.85rem' }}>Sambutan Kepala Sekolah</div>
+                <p style={{ fontSize: '1rem', lineHeight: 1.9, color: 'rgba(238,242,255,0.6)', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontWeight: 400 }}>
                   "{profile.kepsek_sambutan}"
                 </p>
-                <Link href="/profil" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', marginTop: '1rem', color: 'var(--accent)', fontSize: '0.82rem', fontWeight: 600, textDecoration: 'none' }}>
-                  Baca selengkapnya <ChevronRight size={14} />
+                <Link href="/profil" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', marginTop: '1.1rem', fontSize: '0.8rem', fontWeight: 700, textDecoration: 'none', background: 'linear-gradient(135deg, #818cf8, #a78bfa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                  Baca selengkapnya <ChevronRight size={13} />
                 </Link>
               </div>
             </div>
@@ -125,35 +205,35 @@ export default function Home() {
 
         {/* ── PENGUMUMAN ── */}
         <section style={{ marginBottom: '5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.25rem' }}>
             <div>
-              <div className="section-label" style={{ marginBottom: '0.4rem' }}>Terbaru</div>
-              <h2 style={{ fontSize: '1.85rem', fontWeight: 700, color: 'var(--text)' }}>Pengumuman</h2>
+              <div className="section-label" style={{ marginBottom: '0.5rem' }}>Terbaru</div>
+              <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.03em' }}>Pengumuman</h2>
             </div>
-            <Link href="/pengumuman" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 500, border: '1px solid var(--border)', padding: '0.4rem 0.9rem', borderRadius: 8, transition: 'all 0.15s' }}
-              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--accent)'; el.style.borderColor = 'rgba(59,130,246,0.4)' }}
-              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--text-muted)'; el.style.borderColor = 'var(--border)' }}>
+            <Link href="/pengumuman" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(238,242,255,0.5)', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.08)', padding: '0.45rem 1rem', borderRadius: 10, transition: 'all 0.2s' }}
+              onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = '#818cf8'; el.style.borderColor = 'rgba(99,102,241,0.35)'; el.style.background = 'rgba(99,102,241,0.08)' }}
+              onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'rgba(238,242,255,0.5)'; el.style.borderColor = 'rgba(255,255,255,0.08)'; el.style.background = 'transparent' }}>
               Lihat semua <ArrowRight size={13} />
             </Link>
           </div>
 
           {announcements.length === 0 ? (
-            <div className="card" style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '3rem', fontSize: '0.9rem' }}>
+            <div className="card" style={{ textAlign: 'center', color: 'var(--text-dim)', padding: '3rem', fontSize: '0.9rem', borderRadius: 20 }}>
               Belum ada pengumuman
             </div>
           ) : (
-            <div style={{ display: 'grid', gap: '0.65rem' }}>
+            <div style={{ display: 'grid', gap: '0.7rem' }}>
               {announcements.map((a, i) => (
-                <div key={a.id} className="card card-hover" style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start', animationDelay: `${i * 0.06}s` }}>
+                <div key={a.id} className="card card-hover" style={{ display: 'flex', gap: '1.25rem', alignItems: 'flex-start', borderRadius: 16, animationDelay: `${i * 0.06}s` }}>
                   {a.gambar_url && (
-                    <Image src={a.gambar_url} alt={a.judul} width={68} height={68} style={{ borderRadius: 10, objectFit: 'cover', flexShrink: 0, border: '1px solid var(--border)' }} />
+                    <Image src={a.gambar_url} alt={a.judul} width={72} height={72} style={{ borderRadius: 12, objectFit: 'cover', flexShrink: 0, border: '1px solid rgba(99,102,241,0.15)' }} />
                   )}
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginBottom: '0.3rem', fontWeight: 500 }}>
+                    <div style={{ fontSize: '0.68rem', color: 'rgba(238,242,255,0.35)', marginBottom: '0.35rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                       {new Date(a.tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </div>
-                    <h3 style={{ fontFamily: 'Syne, sans-serif', fontSize: '0.975rem', fontWeight: 600, marginBottom: '0.35rem', color: 'var(--text)' }}>{a.judul}</h3>
-                    <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', lineHeight: 1.65, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{a.isi}</p>
+                    <h3 style={{ fontFamily: "'Outfit', sans-serif", fontSize: '1rem', fontWeight: 700, marginBottom: '0.4rem', color: 'var(--text)', letterSpacing: '-0.01em' }}>{a.judul}</h3>
+                    <p style={{ fontSize: '0.83rem', color: 'rgba(238,242,255,0.5)', lineHeight: 1.7, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{a.isi}</p>
                   </div>
                 </div>
               ))}
@@ -164,25 +244,25 @@ export default function Home() {
         {/* ── GALERI ── */}
         {gallery.length > 0 && (
           <section>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.25rem' }}>
               <div>
-                <div className="section-label" style={{ marginBottom: '0.4rem' }}>Dokumentasi</div>
-                <h2 style={{ fontSize: '1.85rem', fontWeight: 700, color: 'var(--text)' }}>Galeri Kegiatan</h2>
+                <div className="section-label" style={{ marginBottom: '0.5rem' }}>Dokumentasi</div>
+                <h2 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text)', letterSpacing: '-0.03em' }}>Galeri Kegiatan</h2>
               </div>
-              <Link href="/galeri" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 500, border: '1px solid var(--border)', padding: '0.4rem 0.9rem', borderRadius: 8, transition: 'all 0.15s' }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--accent)'; el.style.borderColor = 'rgba(59,130,246,0.4)' }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'var(--text-muted)'; el.style.borderColor = 'var(--border)' }}>
+              <Link href="/galeri" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem', color: 'rgba(238,242,255,0.5)', textDecoration: 'none', fontSize: '0.8rem', fontWeight: 600, border: '1px solid rgba(255,255,255,0.08)', padding: '0.45rem 1rem', borderRadius: 10, transition: 'all 0.2s' }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = '#818cf8'; el.style.borderColor = 'rgba(99,102,241,0.35)'; el.style.background = 'rgba(99,102,241,0.08)' }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = 'rgba(238,242,255,0.5)'; el.style.borderColor = 'rgba(255,255,255,0.08)'; el.style.background = 'transparent' }}>
                 Lihat semua <ArrowRight size={13} />
               </Link>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '0.75rem' }}>
               {gallery.map(g => (
-                <div key={g.id} style={{ borderRadius: 12, overflow: 'hidden', aspectRatio: '1', position: 'relative', background: 'var(--surface)', border: '1px solid var(--border)', transition: 'transform 0.25s, border-color 0.25s' }}
-                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'scale(1.03)'; el.style.borderColor = 'var(--border-bright)' }}
-                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'scale(1)'; el.style.borderColor = 'var(--border)' }}>
+                <div key={g.id} style={{ borderRadius: 14, overflow: 'hidden', aspectRatio: '1', position: 'relative', background: 'var(--surface)', border: '1px solid rgba(99,102,241,0.1)', transition: 'transform 0.3s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.3s' }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'scale(1.04)'; el.style.borderColor = 'rgba(99,102,241,0.35)'; el.style.boxShadow = '0 0 30px rgba(99,102,241,0.15)' }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.transform = 'scale(1)'; el.style.borderColor = 'rgba(99,102,241,0.1)'; el.style.boxShadow = 'none' }}>
                   <Image src={g.foto_url} alt={g.caption || 'Galeri'} fill style={{ objectFit: 'cover' }} />
                   {g.caption && (
-                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(0,0,0,0.75))', padding: '1.75rem 0.75rem 0.65rem', color: 'white', fontSize: '0.72rem', fontWeight: 500 }}>
+                    <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'linear-gradient(transparent, rgba(5,7,15,0.85))', padding: '2rem 0.75rem 0.65rem', color: 'white', fontSize: '0.72rem', fontWeight: 600, letterSpacing: '0.02em' }}>
                       {g.caption}
                     </div>
                   )}
