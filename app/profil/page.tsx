@@ -53,7 +53,7 @@ export default function ProfilPage() {
 
             {/* Kepala Sekolah */}
             {(profile?.kepsek_nama || profile?.kepsek_sambutan) && (
-              <div className="card" style={{ marginBottom: '2rem' }}>
+              <div id="kepsek" className="card" style={{ marginBottom: '2rem', scrollMarginTop: '80px' }}>
                 <h2 style={{ fontSize: '1.3rem', color: 'var(--primary)', marginBottom: '1.5rem', paddingBottom: '0.75rem', borderBottom: '1px solid var(--border)' }}>
                   👤 Kepala Sekolah
                 </h2>
@@ -82,7 +82,7 @@ export default function ProfilPage() {
 
             {/* Visi & Misi */}
             {(profile?.visi || profile?.misi) && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
+              <div id="visi-misi" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '2rem', scrollMarginTop: '80px' }}>
                 {profile.visi && (
                   <div className="card" style={{ borderTop: '4px solid var(--primary)' }}>
                     <h3 style={{ fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '0.75rem' }}>🎯 Visi</h3>
@@ -100,7 +100,7 @@ export default function ProfilPage() {
 
             {/* Sejarah */}
             {profile?.sejarah && (
-              <div className="card" style={{ marginBottom: '2rem', borderTop: '4px solid var(--primary-light)' }}>
+              <div id="sejarah" className="card" style={{ marginBottom: '2rem', borderTop: '4px solid var(--primary-light)', scrollMarginTop: '80px' }}>
                 <h3 style={{ fontSize: '1.1rem', color: 'var(--primary)', marginBottom: '0.75rem' }}>📜 Sejarah Sekolah</h3>
                 <p style={{ fontSize: '0.9rem', lineHeight: 1.85, color: 'var(--text)', whiteSpace: 'pre-line' }}>{profile.sejarah}</p>
               </div>
