@@ -185,10 +185,10 @@ export default function Home() {
               <Link href="/profil" className="btn btn-primary" style={{ padding: '0.9rem 2rem', fontSize: '0.925rem', borderRadius: 12 }}>
                 Profil Sekolah <ArrowRight size={16} />
               </Link>
-              <a href="https://spmb-smk1.vercel.app/" target="_blank" rel="noopener noreferrer"
+              <Link href="/spmb"
                 className="btn btn-ghost" style={{ padding: '0.9rem 2rem', fontSize: '0.925rem', borderRadius: 12 }}>
                 Daftar SPMB <ArrowUpRight size={15} />
-              </a>
+              </Link>
             </div>
           </div>
         </div>
