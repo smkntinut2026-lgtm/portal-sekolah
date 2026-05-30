@@ -8,7 +8,34 @@ import { supabase, SchoolProfile, Announcement, GalleryItem } from '@/lib/supaba
 import { ArrowRight, Megaphone, Image as ImageIcon, BookOpen } from 'lucide-react'
 
 export default function Home() {
-  const [profile, setProfile] = useState<SchoolProfile | null>(null)
+  // Tambahkan di state (atas useEffect):
+const [profile, setProfile] = useState<SchoolProfile | null>(null)
+  // (sudah ada, pastikan SchoolProfile punya kepsek_nama, kepsek_foto_url, kepsek_sambutan)
+  
+  // Tambahkan section ini di antara quick links dan pengumuman terbaru:
+  {profile?.kepsek_nama && profile?.kepsek_sambutan && (
+    <section style={{ marginBottom: '3.5rem' }}>
+      <div className="card" style={{ display: 'flex', gap: '2rem', alignItems: 'center', flexWrap: 'wrap', background: 'linear-gradient(135deg, #f8f7f3 0%, #eef2f8 100%)', borderLeft: '4px solid var(--primary)' }}>
+        <div style={{ textAlign: 'center', flexShrink: 0 }}>
+          {profile.kepsek_foto_url
+            ? <Image src={profile.kepsek_foto_url} alt={profile.kepsek_nama} width={100} height={110} style={{ borderRadius: 12, objectFit: 'cover', display: 'block', margin: '0 auto' }} />
+            : <div style={{ width: 90, height: 90, borderRadius: '50%', background: 'rgba(26,58,92,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, margin: '0 auto' }}>👤</div>
+          }
+          <div style={{ marginTop: '0.6rem', fontWeight: 700, fontSize: '0.85rem', color: 'var(--primary)' }}>{profile.kepsek_nama}</div>
+          <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>Kepala Sekolah</div>
+        </div>
+        <div style={{ flex: 1, minWidth: 200 }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.5rem' }}>Sambutan Kepala Sekolah</div>
+          <p style={{ fontSize: '0.9rem', lineHeight: 1.8, color: 'var(--text)', fontStyle: 'italic', display: '-webkit-box', WebkitLineClamp: 4, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            "{profile.kepsek_sambutan}"
+          </p>
+          <Link href="/profil" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.75rem', color: 'var(--primary-light)', fontSize: '0.82rem', textDecoration: 'none', fontWeight: 500 }}>
+            Baca selengkapnya <ArrowRight size={13} />
+          </Link>
+        </div>
+      </div>
+    </section>
+  )}
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [gallery, setGallery] = useState<GalleryItem[]>([])
 
