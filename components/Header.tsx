@@ -3,8 +3,8 @@ import { useEffect, useState, useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation'
-import { supabase, SchoolProfile } from '@/lib/supabase'
-import { Menu, X, ExternalLink, ChevronDown, Target, BookOpen, User, GraduationCap } from 'lucide-react'
+import { supabase, SchoolProfile, Jurusan } from '@/lib/supabase'
+import { Menu, X, ExternalLink, ChevronDown, Target, BookOpen, User, GraduationCap, BookMarked } from 'lucide-react'
 
 const SPMB_HREF = '/spmb'
 const EXT = [
@@ -48,26 +48,34 @@ function Clock() {
 
 export default function Header() {
   const [profile, setProfile] = useState<SchoolProfile | null>(null)
+  const [jurusanList, setJurusanList] = useState<Jurusan[]>([])
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [profilOpen, setProfilOpen] = useState(false)
+  const [jurusanOpen, setJurusanOpen] = useState(false)
   const [mobileProfilOpen, setMobileProfilOpen] = useState(false)
+  const [mobileJurusanOpen, setMobileJurusanOpen] = useState(false)
   const profilRef = useRef<HTMLDivElement>(null)
+  const jurusanRef = useRef<HTMLDivElement>(null)
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const jurusanHoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pathname = usePathname()
 
   useEffect(() => {
     supabase.from('school_profile').select('*').single().then(({ data }) => { if (data) setProfile(data) })
+    supabase.from('jurusan').select('id,nama,singkatan,slug').order('urutan').then(({ data }) => {
+      if (data) setJurusanList(data as Jurusan[])
+    })
     const fn = () => setScrolled(window.scrollY > 20)
     window.addEventListener('scroll', fn)
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (profilRef.current && !profilRef.current.contains(e.target as Node)) {
-        setProfilOpen(false)
-      }
+      if (profilRef.current && !profilRef.current.contains(e.target as Node)) setProfilOpen(false)
+      if (jurusanRef.current && !jurusanRef.current.contains(e.target as Node)) setJurusanOpen(false)
     }
     document.addEventListener('mousedown', handler)
     return () => document.removeEventListener('mousedown', handler)
@@ -81,14 +89,15 @@ export default function Header() {
 
   const hasDropdown = dropdownItems.length > 0
   const isProfilActive = pathname === '/profil' || pathname.startsWith('/profil')
+  const isJurusanActive = pathname.startsWith('/jurusan')
 
-  const handleMouseEnter = () => {
-    if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
-    setProfilOpen(true)
-  }
-  const handleMouseLeave = () => {
-    hoverTimeout.current = setTimeout(() => setProfilOpen(false), 150)
-  }
+  // Profil hover handlers
+  const handleProfilEnter = () => { if (hoverTimeout.current) clearTimeout(hoverTimeout.current); setProfilOpen(true) }
+  const handleProfilLeave = () => { hoverTimeout.current = setTimeout(() => setProfilOpen(false), 150) }
+
+  // Jurusan hover handlers
+  const handleJurusanEnter = () => { if (jurusanHoverTimeout.current) clearTimeout(jurusanHoverTimeout.current); setJurusanOpen(true) }
+  const handleJurusanLeave = () => { jurusanHoverTimeout.current = setTimeout(() => setJurusanOpen(false), 150) }
 
   const NAV_LEFT = [
     { label: 'Beranda', href: '/' },
@@ -112,6 +121,22 @@ export default function Header() {
     letterSpacing: '0.01em',
   })
 
+  const dropdownStyle: React.CSSProperties = {
+    position: 'absolute', top: 'calc(100% + 8px)', right: 0, minWidth: 210,
+    background: 'rgba(253,248,240,0.95)', backdropFilter: 'blur(20px)',
+    border: '1px solid rgba(184,121,26,0.2)', borderRadius: 14,
+    boxShadow: '0 8px 40px rgba(120,70,10,0.15), 0 2px 8px rgba(120,70,10,0.08)',
+    padding: '0.5rem', animation: 'slideDown 0.18s ease',
+    zIndex: 200,
+  }
+
+  const dropdownLinkStyle: React.CSSProperties = {
+    display: 'flex', alignItems: 'center', gap: '0.6rem',
+    padding: '0.55rem 0.85rem', borderRadius: 9,
+    color: 'rgba(45,26,6,0.65)', fontSize: '0.82rem', fontWeight: 500,
+    textDecoration: 'none', transition: 'all 0.15s',
+  }
+
   return (
     <>
       <style>{`
@@ -124,14 +149,10 @@ export default function Header() {
 
       <header style={{
         position: 'sticky', top: 0, zIndex: 100,
-        background: scrolled
-          ? 'rgba(253,248,240,0.82)'
-          : 'rgba(253,248,240,0.5)',
+        background: scrolled ? 'rgba(253,248,240,0.82)' : 'rgba(253,248,240,0.5)',
         backdropFilter: 'blur(24px) saturate(180%)',
         WebkitBackdropFilter: 'blur(24px) saturate(180%)',
-        borderBottom: scrolled
-          ? '1px solid rgba(184,121,26,0.22)'
-          : '1px solid rgba(184,121,26,0.1)',
+        borderBottom: scrolled ? '1px solid rgba(184,121,26,0.22)' : '1px solid rgba(184,121,26,0.1)',
         transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
         boxShadow: scrolled ? '0 4px 30px rgba(120,70,10,0.12)' : 'none',
       }}>
@@ -145,6 +166,40 @@ export default function Header() {
             {NAV_LEFT.map(item => (
               <Link key={item.href} href={item.href} className="nav-link" style={navLinkStyle(pathname === item.href)}>{item.label}</Link>
             ))}
+
+            {/* ===== JURUSAN DROPDOWN ===== */}
+            {jurusanList.length > 0 && (
+              <div ref={jurusanRef} style={{ position: 'relative' }}
+                onMouseEnter={handleJurusanEnter}
+                onMouseLeave={handleJurusanLeave}>
+                <button
+                  onClick={() => setJurusanOpen(o => !o)}
+                  className="nav-link"
+                  style={{ ...navLinkStyle(isJurusanActive), display: 'flex', alignItems: 'center', gap: '0.3rem', cursor: 'pointer', background: isJurusanActive ? 'linear-gradient(135deg,rgba(184,121,26,0.18),rgba(212,146,31,0.14))' : 'transparent', border: isJurusanActive ? '1px solid rgba(184,121,26,0.3)' : '1px solid transparent' }}>
+                  Jurusan
+                  <ChevronDown size={13} style={{ transition: 'transform 0.2s', transform: jurusanOpen ? 'rotate(180deg)' : 'rotate(0deg)' }} />
+                </button>
+
+                {jurusanOpen && (
+                  <div style={dropdownStyle}>
+                    {jurusanList.map((j, i) => (
+                      <Link key={j.id} href={`/jurusan/${j.slug}`}
+                        onClick={() => setJurusanOpen(false)}
+                        className="dropdown-item"
+                        style={dropdownLinkStyle}>
+                        <div style={{ width: 28, height: 28, borderRadius: 7, background: 'linear-gradient(135deg, rgba(184,121,26,0.15), rgba(232,168,37,0.1))', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <BookMarked size={13} color="#b8791a" />
+                        </div>
+                        <div>
+                          <div style={{ fontWeight: 600, fontSize: '0.82rem', color: 'rgba(45,26,6,0.8)', lineHeight: 1.2 }}>{j.nama}</div>
+                          {j.singkatan && <div style={{ fontSize: '0.7rem', color: '#b8791a', fontWeight: 700 }}>{j.singkatan}</div>}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </nav>
 
           {/* Logo center */}
@@ -173,8 +228,8 @@ export default function Header() {
 
             {/* Profil dropdown */}
             <div ref={profilRef} style={{ position: 'relative' }}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}>
+              onMouseEnter={handleProfilEnter}
+              onMouseLeave={handleProfilLeave}>
               {hasDropdown ? (
                 <button
                   onClick={() => setProfilOpen(o => !o)}
@@ -188,20 +243,13 @@ export default function Header() {
               )}
 
               {hasDropdown && profilOpen && (
-                <div style={{
-                  position: 'absolute', top: 'calc(100% + 8px)', right: 0, minWidth: 200,
-                  background: 'rgba(253,248,240,0.95)', backdropFilter: 'blur(20px)',
-                  border: '1px solid rgba(184,121,26,0.2)', borderRadius: 14,
-                  boxShadow: '0 8px 40px rgba(120,70,10,0.15), 0 2px 8px rgba(120,70,10,0.08)',
-                  padding: '0.5rem', animation: 'slideDown 0.18s ease',
-                  zIndex: 200,
-                }}>
-                  <Link href="/profil" className="dropdown-item" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.55rem 0.85rem', borderRadius: 9, color: 'rgba(45,26,6,0.65)', fontSize: '0.82rem', fontWeight: 600, textDecoration: 'none', transition: 'all 0.15s' }}>
+                <div style={dropdownStyle}>
+                  <Link href="/profil" className="dropdown-item" style={{ ...dropdownLinkStyle, fontWeight: 600 }}>
                     <GraduationCap size={14} style={{ color: '#b8791a' }} /> Profil Sekolah
                   </Link>
                   <div style={{ height: 1, background: 'rgba(184,121,26,0.1)', margin: '0.25rem 0.5rem' }} />
                   {dropdownItems.map(item => (
-                    <Link key={item.href} href={item.href} className="dropdown-item" style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', padding: '0.55rem 0.85rem', borderRadius: 9, color: 'rgba(45,26,6,0.65)', fontSize: '0.82rem', fontWeight: 500, textDecoration: 'none', transition: 'all 0.15s' }}>
+                    <Link key={item.href} href={item.href} className="dropdown-item" style={dropdownLinkStyle}>
                       <span style={{ color: '#b8791a' }}>{item.icon}</span> {item.label}
                     </Link>
                   ))}
@@ -263,6 +311,29 @@ export default function Header() {
                 {item.label}
               </Link>
             ))}
+
+            {/* Mobile Jurusan */}
+            {jurusanList.length > 0 && (
+              <div>
+                <button onClick={() => setMobileJurusanOpen(o => !o)}
+                  style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', fontSize: '0.95rem', fontWeight: 600, color: isJurusanActive ? '#7c4a00' : 'rgba(45,26,6,0.65)', background: 'none', border: 'none', borderBottom: '1px solid rgba(184,121,26,0.08)', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  Jurusan <ChevronDown size={14} style={{ transform: mobileJurusanOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
+                </button>
+                {mobileJurusanOpen && (
+                  <div style={{ paddingLeft: '1rem' }}>
+                    {jurusanList.map(j => (
+                      <Link key={j.id} href={`/jurusan/${j.slug}`} onClick={() => setMenuOpen(false)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.55rem 0', fontSize: '0.88rem', color: 'rgba(45,26,6,0.6)', textDecoration: 'none' }}>
+                        <BookMarked size={13} color="#b8791a" />
+                        {j.nama}{j.singkatan ? ` (${j.singkatan})` : ''}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Mobile Profil */}
             <div>
               <button onClick={() => setMobileProfilOpen(o => !o)}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.7rem 0', fontSize: '0.95rem', fontWeight: 600, color: isProfilActive ? '#7c4a00' : 'rgba(45,26,6,0.65)', background: 'none', border: 'none', borderBottom: '1px solid rgba(184,121,26,0.08)', cursor: 'pointer', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
@@ -277,6 +348,7 @@ export default function Header() {
                 </div>
               )}
             </div>
+
             <div style={{ marginTop: '1rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <a href={SPMB_HREF} style={{ display: 'block', padding: '0.75rem 1rem', background: 'linear-gradient(135deg, #7c4a00, #b8791a)', color: '#fff9ee', borderRadius: 10, textDecoration: 'none', fontWeight: 700, fontSize: '0.9rem', textAlign: 'center' }}>SPMB Online</a>
               {EXT.map(e => (
