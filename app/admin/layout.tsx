@@ -2,11 +2,12 @@
 import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { LayoutDashboard, School, Megaphone, Images, KeyRound, LogOut, Menu, ExternalLink, ChevronLeft, X } from 'lucide-react'
+import { LayoutDashboard, School, Megaphone, Images, KeyRound, LogOut, Menu, ExternalLink, ChevronLeft, X, BookMarked } from 'lucide-react'
 
 const MENU = [
   { label: 'Dashboard', href: '/admin/dashboard', icon: <LayoutDashboard size={17} /> },
   { label: 'Profil Sekolah', href: '/admin/profil', icon: <School size={17} /> },
+  { label: 'Jurusan', href: '/admin/jurusan', icon: <BookMarked size={17} /> },
   { label: 'Pengumuman', href: '/admin/pengumuman', icon: <Megaphone size={17} /> },
   { label: 'Galeri', href: '/admin/galeri', icon: <Images size={17} /> },
   { label: 'Ganti Password', href: '/admin/password', icon: <KeyRound size={17} /> },
