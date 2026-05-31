@@ -42,3 +42,19 @@ export type GalleryItem = {
   urutan: number
   created_at: string
 }
+
+export type Jurusan = {
+  id: string
+  nama: string
+  singkatan: string
+  slug: string
+  deskripsi: string
+  visi: string
+  misi: string
+  kompetensi: string
+  prospek_kerja: string
+  foto_url: string
+  galeri: string[] // array of image URLs
+  urutan: number
+  created_at: string
+}
